@@ -2,6 +2,7 @@ import { getProviders, getSession, signIn } from 'next-auth/client'
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import Head from 'next/head'
+
 const SignInPage = dynamic(() => import('../styles/home').then((mod) => mod.SignInPage))
 
 
@@ -23,7 +24,7 @@ export default function SignIn({providers}) {
       <h2>Sign In</h2>
      {Object.values(providers).map(provider => (
         <div key={provider.name}>
-          <button onClick={() => signIn(provider.id, {callbackUrl: '/selection'})}>
+          <button onClick={() => signIn(provider.id, {callbackUrl: 'https:/devsocial.vercel.app/selection'})}>
             Connect with {provider.name}
           </button>
         </div>
