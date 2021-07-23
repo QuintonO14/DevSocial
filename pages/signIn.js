@@ -24,7 +24,7 @@ export default function SignIn({providers}) {
       <h2>Sign In</h2>
      {Object.values(providers).map(provider => (
         <div key={provider.name}>
-          <button onClick={() => signIn(provider.id, {callbackUrl: 'https:/devsocial.vercel.app/selection'})}>
+          <button onClick={() => signIn(provider.id, {callbackUrl: 'https://devsocial.vercel.app/selection'})}>
             Connect with {provider.name}
           </button>
         </div>
