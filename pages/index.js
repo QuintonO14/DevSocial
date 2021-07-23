@@ -28,7 +28,6 @@ export default function Index() {
           <Link href="/signIn">
             <button>Sign In</button>
           </Link>
- 
           <a href="https://github.com/QuintonO14/DevSocial">Source Code</a>
         </div>
       </div>
