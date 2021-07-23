@@ -1,7 +1,30 @@
-import '../styles/globals.css'
+import {  Provider } from 'next-auth/client'
+import dynamic from 'next/dynamic';
+import { GlobalStyles } from '../styles/global';
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { AnimateSharedLayout } from 'framer-motion';
+const Loader = dynamic(() => import('../styles/home').then((mod) => mod.Loader))
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+export default function App({ Component, pageProps }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const handleStart = () => { setLoading(true); };
+    const handleComplete = () => { setLoading(false); };
+    router.events.on('routeChangeStart', handleStart);
+    router.events.on('routeChangeComplete', handleComplete);
+    router.events.on('routeChangeError', handleComplete);
+  }, [router]);
+
+  return (
+  <AnimateSharedLayout>
+    <Provider session={pageProps.session}>
+      <GlobalStyles />
+      {loading ? (<Loader />) : ( 
+      <Component {...pageProps} />
+      )}
+    </Provider>
+  </AnimateSharedLayout>
+  )
 }
-
-export default MyApp
