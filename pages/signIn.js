@@ -24,7 +24,7 @@ export default function SignIn({providers}) {
       <h2>Sign In</h2>
      {Object.values(providers).map(provider => (
         <div key={provider.name}>
-          <button onClick={() => signIn(provider.id, {callbackUrl: 'https://devsocial.vercel.app/selection'})}>
+          <button onClick={() => signIn(provider.id, {callbackUrl: 'http://localhost:3000/selection'})}>
             Connect with {provider.name}
           </button>
         </div>
@@ -35,12 +35,10 @@ export default function SignIn({providers}) {
 }
 
 export async function getServerSideProps (context) {
-  const session = await getSession(context)
   
   return {
     props: {
       providers: await getProviders(),
-      session : session,
     }
   }
 }
