@@ -49,7 +49,7 @@ const Home = ({posts, profile, session, users}) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta charSet="utf-8" />
         <title>DevSocial | Home</title>
-        <meta name="homepage" content="The homepage for logged in DevSocial users" />
+        <meta name="description" content="The homepage for logged in DevSocial users" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
        </Head>
        <Navigation filteredUsers={filteredUsers} findUsers={findUsers} resultsString={resultsString} session={session} />

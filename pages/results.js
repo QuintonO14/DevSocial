@@ -46,7 +46,7 @@ const Results = ({result, searchedUsers, session, users}) => {
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <meta charSet="utf-8" />
           <title>DevSocial | Search Results </title>
-          <meta name="results" content="Search results page for users" />
+          <meta name="description" content="Search results page for users" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
         </Head>
         <Navigation filteredUsers={filteredUsers} findUsers={findUsers} resultsString={resultsString} session={session} />

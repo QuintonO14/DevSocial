@@ -36,7 +36,7 @@ const Select = ({user}) => {
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             <meta charSet="utf-8" />
             <title>DevSocial | Select</title>
-            <meta name="selection" content="Language and tool selection page for DevSocial user" />
+            <meta name="description" content="Language and tool selection page for DevSocial user" />
             <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
         </Head>
         {firstPage === true ? (

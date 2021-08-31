@@ -13,7 +13,8 @@ export default function Index() {
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <meta charSet="utf-8" />
       <title>DevSocial</title>
-      <meta name="devsocial" content="A place for developers to connect, share, and work together more personally" />
+      <meta name="application-name" content="DevSocial" />
+      <meta name="description" content="A place for developers to connect, share, and work together more personally" />
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
     </Head>
     <Devsocial

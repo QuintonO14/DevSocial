@@ -14,7 +14,7 @@ export default function SignIn({providers}) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta charSet="utf-8" />
         <title>DevSocial | Sign In</title>
-        <meta name="signin" content="Sign in page for DevSocial" />
+        <meta name="description" content="Sign in page for DevSocial" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
     </Head>
     <motion.div
