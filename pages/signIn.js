@@ -2,12 +2,9 @@ import { getProviders, getSession, signIn } from 'next-auth/client'
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import Head from 'next/head'
-
 const SignInPage = dynamic(() => import('../styles/home').then((mod) => mod.SignInPage))
 
-
 export default function SignIn({providers}) {
-
   return ( 
   <SignInPage>
     <Head>
@@ -18,7 +15,7 @@ export default function SignIn({providers}) {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
     </Head>
     <motion.div
-    initial={{ opacity: 0 }}
+    initial={{ opacity: 0}}
     animate={{ opacity: 1 }}
     transition={{ delay: 0.5 }}>
       <h2>Sign In</h2>

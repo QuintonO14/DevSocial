@@ -41,7 +41,7 @@ const Select = ({user}) => {
         </Head>
         {firstPage === true ? (
         <>
-        <h4>Select the languages you know and enjoy using</h4>
+        <h1>Select Languages</h1>
         <small>(This can be changed later)</small>
         <LangSelect>
            {languages.map((language) => {
@@ -50,7 +50,8 @@ const Select = ({user}) => {
                 firstPage={firstPage}
                 key={language.value} 
                 language={language} 
-                selectLang={selectedLangs} 
+                selectedLangs={selectedLangs} 
+                checkTools={checkTools}
                 checkLangs={checkLangs} />
               )
            })}
@@ -58,7 +59,7 @@ const Select = ({user}) => {
         </>
         ) : (
         <>
-         <h4>Select the tools you enjoy using while coding</h4>
+         <h1>Select Tools</h1>
          <small>(This can be changed later)</small>
           <LangSelect>
             {tools.map((tool) => {
@@ -67,7 +68,7 @@ const Select = ({user}) => {
                  key={tool.value} 
                  tool={tool}
                  firstPage={firstPage} 
-                 selectTool={selectedTools}
+                 selectedTools={selectedTools}
                  checkTools={checkTools} />
                )
             })}

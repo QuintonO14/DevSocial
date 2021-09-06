@@ -1,20 +1,23 @@
 import dynamic from 'next/dynamic'
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 const Friends = dynamic(() => import('../modal/friends'))
 const Followers = dynamic(() => import('../modal/followers'))
 const CloseModal = dynamic(() => import('../../styles/home').then((mod) => mod.CloseModal))
 const List = dynamic(() => import('../../styles/home').then((mod) => mod.List))
 const Modal = dynamic(() => import('../../styles/home').then((mod) => mod.Modal))
+
 const Overlay = dynamic(() => import('../../styles/home').then((mod) => mod.Overlay))
 
 const ListModal = ({close, deleting, followers, following, friends, profile}) => {
     return (
       <>
-        {friends === true ? (
+        <AnimatePresence>
+        {friends === true && (
           <>
-          <Modal 
-          as={motion.div} 
-          animate={deleting === true ? {y: 500} : {y: 100}} 
+          <Modal
+          as={motion.div}
+          initial={{opacity: 0, top: '30%'}}
+          animate={{ opacity: 1}} 
           transition={{ease: 'easeInOut', type: 'spring', bounce:0.25, duration: .5}}>
             <h1>Friends</h1>
             <List>
@@ -34,8 +37,10 @@ const ListModal = ({close, deleting, followers, following, friends, profile}) =>
           </Modal>
           <Overlay onClick={close} />
           </>
-        ) : null}
-        {followers === true ? (
+        )}
+        </AnimatePresence>
+       <AnimatePresence>
+          {followers === true && (
           <>
           <Modal as={motion.div}
             animate={following === true ? {y: 500} : {y: 100}} 
@@ -57,7 +62,8 @@ const ListModal = ({close, deleting, followers, following, friends, profile}) =>
           </Modal>
           <Overlay onClick={close} />
           </>
-        ) : null}
+        )}
+       </AnimatePresence>
       </>
     )
 }

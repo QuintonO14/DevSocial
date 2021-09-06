@@ -11,11 +11,12 @@ export const GlobalStyles = createGlobalStyle`
   }
   html {
     height: 100%;
+    padding: 0;
   }
 
   #__next {
     height: 100%;
-    background-color: rgba(50, 50, 50, 1)
+    background-color: rgba(50, 50, 50, 1);
   }
 
  

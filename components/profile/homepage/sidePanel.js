@@ -12,7 +12,7 @@ const sidePanel = ({follower, profile, session}) => {
     const [friends, showFriends] = useState(false);
     const [followers, showFollowers] = useState(false);
     const followerId = follower.map((id) => {return id.id}).includes(session.userId)
-    //Change between Friends and Followers and set tooltip visibility
+    // Change between Friends and Followers and set tooltip visibility
     useEffect(() => {
       const timer = setTimeout(() => {
         setPanel(!alternatePanel);
@@ -58,7 +58,7 @@ const sidePanel = ({follower, profile, session}) => {
           {profile.friends.length ? profile.friends.slice(0, 25).map((friend) => {
             return (
                 <Link key={friend.id} href={`/profile/${friend.id}`}>
-                  <img height={50} width={50} src={friend.image} data-tip={friend.name} />
+                  <img src={friend.image} data-tip={friend.name} />
                 </Link>
             )
           }) : (
@@ -83,7 +83,7 @@ const sidePanel = ({follower, profile, session}) => {
           {profile.friendsRelation.length > 0 ? profile.friendsRelation.slice(0,25).map((follower) => {
             return (
               <Link key={follower.id} href={`/profile/${follower.id}`}>
-              <img height={50} width={50} src={follower.image} data-tip={follower.name} />
+              <img src={follower.image} data-tip={follower.name} />
              </Link>
             )
           }) : (

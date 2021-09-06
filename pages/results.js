@@ -10,11 +10,9 @@ const ResultsPage = dynamic(() => import('../styles/home').then((mod) => mod.Res
 const Navigation = dynamic(() => import('../components/navbar'))
 const Container = dynamic(() => import('../components/search/container'))
 
-const Results = ({result, searchedUsers, session, users}) => {
+const Results = ({result, searchedUsers, session }) => {
     const [page, setPage] = useState(0)
     const maxPage = Math.ceil(searchedUsers.length / 10) - 1
-    const [resultsString , results] = useState('')
-    const [filteredUsers, setUsers] = useState(null)
     //Set Next Page of Results
     const nextPage = () => {
       setPage(page + 1);
@@ -23,22 +21,6 @@ const Results = ({result, searchedUsers, session, users}) => {
     const prevPage = () => {
         setPage(page - 1);
     }
-    //Search Users Function
-    const findUsers = async (e) => {
-      const searchUsers = e.target.value.toLowerCase()
-      results(searchUsers)
-      const usersFiltered = users.filter((user) => {
-        return user.name.toLowerCase().match(searchUsers.replace(/\\/g, "\\\\"));
-      })
-      const foundUsers = usersFiltered.map((user) => {
-          return user.id
-      })
-      if(!searchUsers) {
-        setUsers(null)
-      } else {
-      setUsers(foundUsers)
-      }
-    }
 
     return (
       <ResultsPage>
@@ -46,19 +28,19 @@ const Results = ({result, searchedUsers, session, users}) => {
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <meta charSet="utf-8" />
           <title>DevSocial | Search Results </title>
-          <meta name="description" content="Search results page for users" />
+          <meta name="description" content="Search results page for users on DevSocial" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
         </Head>
-        <Navigation filteredUsers={filteredUsers} findUsers={findUsers} resultsString={resultsString} session={session} />
-        <h2>
-          {searchedUsers.length} Results For "{result}"
-        </h2>
-        <div>
+        <Navigation />
+        <h1>
+          {searchedUsers.length} results for "{result}"
+        </h1>
+        <Container users={searchedUsers} result={result} page={page} session={session} />
+        <div style={{display:"flex",justifyContent:"center",backgroundColor:"rgba(50,50,50,1)"}}>
         <Nav style={searchedUsers.length !== 0 && page > 0 ? {"opacity":"1"} : {"opacity":"0","pointerEvents":"none"}}
          onClick={prevPage}>
            <FontAwesomeIcon icon={faChevronLeft} />
         </Nav>
-        <Container users={searchedUsers} page={page} session={session} />
          <Nav style={searchedUsers.length !== 0 && page !== maxPage ? {"opacity":"1"} : {"opacity":"0", "pointerEvents":"none"}}
           onClick={nextPage}>
             <FontAwesomeIcon icon={faChevronRight} />
@@ -73,7 +55,6 @@ export default Results;
 export async function getServerSideProps(context) {
     const session = await getSession(context)
     const result = context.query.string
-    
     if(!session) {
       return {
         redirect: {
@@ -82,7 +63,7 @@ export async function getServerSideProps(context) {
         }
       }
     }  
-    const users = await prisma.user.findMany()
+
 
     const searchedUsers = await prisma.user.findMany({
         where: {
@@ -119,7 +100,6 @@ export async function getServerSideProps(context) {
         searchedUsers: JSON.parse(JSON.stringify(searchedUsers)),
         session: session,
         result: result,
-        users: JSON.parse(JSON.stringify(users))
       } 
     }
    

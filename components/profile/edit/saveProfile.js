@@ -49,12 +49,11 @@ const saveProfile = ({ about, data, email, deleteAccount, handleFile,
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.3 }} 
-      style={{background: 'rgba(50, 50, 50, 1)'}}>
+      style={{background: 'rgba(50, 50, 50, 1)', height: 'auto'}}>
           <ProfileEdit>
             <p style={messageClass}>{message}</p>
             <Basic 
             about={about} 
-            
             data={data} 
             email={email} 
             file={file}

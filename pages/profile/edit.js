@@ -8,7 +8,7 @@ import Head from 'next/head';
 const Navigation = dynamic(() => import('../../components/navbar'))
 const SaveProfile = dynamic(() => import('../../components/profile/edit/saveProfile'))
 
-const Profile = ({ data, users, session }) => {
+const Profile = ({ data }) => {
     const userLanguages =  useRef(null) 
     const userTools = useRef(null)
     const name = useRef(null)
@@ -17,9 +17,6 @@ const Profile = ({ data, users, session }) => {
     const [file, setFile] = useState(null);
     const [message, setMsg] = useState('')
     const router = useRouter();
-    const searchedUsers = users.filter((user => user.id !== session.userId))
-    const [resultsString , results] = useState('')
-    const [filteredUsers, setUsers] = useState(null)
     const filteredLang = languages.filter(language => data.languages.includes(language.value))
     const filteredTool = tools.filter(tool => data.tools.includes(tool.value))
 
@@ -36,24 +33,6 @@ const Profile = ({ data, users, session }) => {
         }
       })
     }
-
-    //Search for users
-    const findUsers = async (e) => {
-      const searchUsers = e.target.value.toLowerCase()
-      results(searchUsers)
-      const usersFiltered = searchedUsers.filter((user) => {
-        return user.name.toLowerCase().match(searchUsers.replace(/\\/g, "\\\\"));
-      })
-      const foundUsers = usersFiltered.map((user) => {
-          return user.id
-      })
-      if(!searchUsers) {
-        setUsers(null)
-      } else {
-      setUsers(foundUsers)
-      }
-    }
-
     //Handles file upload for form submission
     const handleFile = async (e) => {
       let files = e.target.files[0]
@@ -119,25 +98,18 @@ const Profile = ({ data, users, session }) => {
         setMsg('Account Deleted')
       }, 5000)
       router.push('/signIn')
-    
     }
 
-    
     return (
-        <div>
+        <div style={{height: 'auto'}}>
             <Head>
               <meta name="viewport" content="initial-scale=1.0, width=device-width" />
               <meta charSet="utf-8" />
               <title>DevSocial | Edit</title>
-              <meta name="edit" content="Edit profile and delete account page for Dev Social" />
+              <meta name="description" content="Edit profile and delete account page for Dev Social" />
               <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
             </Head>
-            <Navigation 
-             filteredUsers={filteredUsers}
-             findUsers={findUsers} 
-             resultsString={resultsString}
-             session={session}
-            />
+            <Navigation />
             <SaveProfile
              about={about}
              data={data} 
@@ -192,11 +164,9 @@ export async function getServerSideProps(context) {
         }
       })
 
-    const users = await prisma.user.findMany();
       return {
         props: {
           data : JSON.parse(JSON.stringify(profile)),
-          users: JSON.parse(JSON.stringify(users)),
           session: session
         } 
       }

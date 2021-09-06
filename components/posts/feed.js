@@ -6,12 +6,9 @@ import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import Moment from 'react-moment'
 import { motion } from 'framer-motion'
-const Overlay = dynamic(() => import('../../styles/home').then((mod) => mod.Overlay))
 const Post = dynamic(() => import('../../styles/home').then((mod) => mod.Post))
 const Posts = dynamic(() => import('../../styles/home').then((mod) => mod.Posts))
-const PostButton1 = dynamic(() => import('../../styles/home').then((mod) => mod.PostButton1))
-const PostButton2 = dynamic(() => import('../../styles/home').then((mod) => mod.PostButton2))
-const PostForm = dynamic(() => import('../../styles/home').then((mod) => mod.PostForm))
+const Form = dynamic(() => import('../../components/posts/form'))
 
 const Feed = ({ posts, profile, session }) => {
     const content = useRef(null)
@@ -51,7 +48,6 @@ const Feed = ({ posts, profile, session }) => {
               })
               showCreate(false)
               document.getElementById("create").reset()
-              router.replace(router.asPath)
           }
       }
       //Delete post from everywhere
@@ -74,15 +70,16 @@ const Feed = ({ posts, profile, session }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }} >
-          {session.userId === profile.id ? (
+          {session.userId === profile.id && (
             <div>
               <input 
                 placeholder="Click to add something new!" 
                 value=""
+                readOnly
                 onClick={() => showCreate(true)}
                  />
             </div> 
-              ) : null}
+              )}
           {profilePosts.length ? profilePosts.map((post) => {
                   return (
                       <Post key={post.id}>
@@ -111,57 +108,13 @@ const Feed = ({ posts, profile, session }) => {
                 added! Post whatever comes to your mind...don't be shy!
               </Post>
           }
-          {create === true ? (
-            <>
-              <PostForm 
-              as={motion.form}
-              id="create"
-              onSubmit={createPost}
-              animate={{y: 300}}
-              transition={{ease: 'easeInOut', type: 'spring', bounce:0.25, duration: .5}}
-              >
-                 {message ? <p style={messageClass}>{message}</p> : null}
-                <textarea
-                ref={content} 
-                rows={5}
-                pattern="\S+"
-                minLength={1}
-                id="content"
-                placeholder="What do you want to say?" 
-                onClick={() => showCreate(true)} 
-                >
-                </textarea>
-                <div>
-                  <PostButton1 onClick={() => showCreate(false)}>Cancel</PostButton1>
-                  <PostButton2 type="submit">Publish</PostButton2>
-                </div>
-            </PostForm>
-            <Overlay onClick={() => showCreate(false)} />
-            </>
-          ) : create === false ? ( 
-                <PostForm
-          as={motion.form}
-          id="create"
-          onSubmit={createPost}
-          animate={{y: -300}}
-          transition={{ease: 'easeInOut', type: 'spring', bounce:0.25, duration: .5}}
-          >
-           
-            <textarea
-             ref={content} 
-             rows={5}
-             id="content"
-             minLength={1}
-             placeholder="What do you want to say?" 
-             onClick={() => showCreate(true)} 
-             required>
-            </textarea>
-            <div>
-              <PostButton1 onClick={() => showCreate(false)}>Cancel</PostButton1>
-              <PostButton2 type="submit">Publish</PostButton2>
-            </div>
-        </PostForm>
-          ) : null }
+          <Form
+           create={create}
+           createPost={createPost} 
+           content={content} 
+           message={message} 
+           messageClass={messageClass} 
+           showCreate={showCreate} />
         </Posts>
     ) 
 }

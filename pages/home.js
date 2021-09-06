@@ -1,49 +1,49 @@
 import  prisma  from '../lib/prisma'
 import dynamic from 'next/dynamic'
 import { getSession, signOut } from 'next-auth/client'
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Head from 'next/head'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 const Feed = dynamic(() => import('../components/posts/feed'))
 const Info = dynamic(() => import('../components/profile/homepage/info'))
 const Navigation = dynamic(() => import ('../components/navbar'))
 const SidePanel = dynamic(() => import('../components/profile/homepage/sidePanel'))
 const Dashboard = dynamic(() => import('../styles/home').then((mod) => mod.Dashboard))
+const BigScreen = dynamic(() => import('../styles/home').then((mod) => mod.BigScreen))
 
-const Home = ({posts, profile, session, users}) => { 
+
+const Home = ({posts, profile, session }) => { 
+    const [screen, setScreen] = useState(0)
+    const [section, setSection] = useState(false)
     const friends = profile.friends.map((friend) => {
       return friend.id
     })
     const followers = profile.friendsRelation.map((follower) => {
       return follower.id
     })
-    const searchedUsers = users.filter((user => user.id !== session.userId))
-    const [resultsString , results] = useState('')
-    const [filteredUsers, setUsers] = useState(null)
     const content = useRef(null)
 
     //Trigger Create Post Form
     const newPost = async () => {
         showCreate(true)
     }
-
-    //Search Users Function
-    const findUsers = async (e) => {
-      const searchUsers = e.target.value.toLowerCase()
-      results(searchUsers)
-      const usersFiltered = searchedUsers.filter((user) => {
-        return user.name.toLowerCase().match(searchUsers.replace(/\\/g, "\\\\"));
-      })
-      const foundUsers = usersFiltered.map((user) => {
-          return user.id
-      })
-      if(!searchUsers) {
-        setUsers(null)
-      } else {
-      setUsers(foundUsers)
+    //Set device viewport width to configure home layout
+    useEffect(() => {
+      const ac = new AbortController();
+      const initialWidth = () => {
+          setScreen(window.innerWidth)
       }
-    }
+      const resize = () => {
+          setScreen(window.innerWidth)
+      }
+      window.onload = initialWidth()
+      window.addEventListener("resize", resize)
+      return () => ac.abort();
+    }, [])
 
     return (
+
       <Dashboard>
        <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -52,20 +52,46 @@ const Home = ({posts, profile, session, users}) => {
         <meta name="description" content="The homepage for logged in DevSocial users" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
        </Head>
-       <Navigation filteredUsers={filteredUsers} findUsers={findUsers} resultsString={resultsString} session={session} />
-       <div>
-       <Info profile={profile} session={session}/>
-        <Feed
-        content={content}
-        friends={friends}
-        posts={posts}
-        profile={profile}
-        newPost={newPost}
-        session={session}
-        signOut={signOut}
-        />
-       <SidePanel profile={profile} session={session} follower={followers} />
-       </div>
+       <Navigation />
+       {screen < 900 ? (
+          <div>
+          {section === true  ? (
+          <>
+          <Info profile={profile} session={session}/>
+          <SidePanel profile={profile} session={session} follower={followers} />
+          </>
+          ) : (
+           <Feed
+           content={content}
+           friends={friends}
+           posts={posts}
+           profile={profile}
+           newPost={newPost}
+           session={session}
+           signOut={signOut}
+           />
+          )}
+          <button onClick={() => setSection(!section)}>
+            {section === true ? <FontAwesomeIcon icon={faPencilAlt} /> : <FontAwesomeIcon icon={faUser} />}
+           </button>
+          </div>
+       ) : (
+         <BigScreen>
+          <section>
+          <Info profile={profile} session={session}/>
+          <SidePanel profile={profile} session={session} follower={followers} />
+          </section>
+          <Feed
+           content={content}
+           friends={friends}
+           posts={posts}
+           profile={profile}
+           newPost={newPost}
+           session={session}
+           signOut={signOut}
+           />
+         </BigScreen>
+       )}
       </Dashboard>
     )
 }
@@ -82,7 +108,6 @@ export async function getServerSideProps(context) {
       }
     }
   }
- 
 
   const profile = await prisma.user.findUnique({
     where: {
@@ -131,12 +156,10 @@ export async function getServerSideProps(context) {
      },  
   })
 
-  const users = await prisma.user.findMany()
   return {
     props: {
       posts : JSON.parse(JSON.stringify(posts)),
       profile: JSON.parse(JSON.stringify(profile)),
-      users: JSON.parse(JSON.stringify(users)),
       session: session
     } 
   }

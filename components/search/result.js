@@ -45,7 +45,7 @@ const ResultPic = ({user, session, isFriend, isFollowing}) => {
     return (
         <Result key={user.id}>
           <Link href={`/profile/${user.id}`}>
-          <h5>{user.name}</h5>
+          <h2>{user.name}</h2>
           </Link>
           <img src={user.image}  alt="No image" />
           <footer>

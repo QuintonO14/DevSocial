@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 const Comments = dynamic(() => import('../comments/comments'))
 const CommentBox = dynamic(() => import('../comments/commentBox'))
-const Error = dynamic(() => import('../../styles/home').then((mod) => mod.Error))
 
 const Post = ({addComment, deletePost, edit, editRef, handleChange, message, post, save, session}) => {
     return (

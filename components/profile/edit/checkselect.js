@@ -4,9 +4,8 @@ import { motion } from 'framer-motion'
 const SelectDiv = dynamic(() => import('../../../styles/home').then((mod) => mod.SelectDiv))
 
 
-const CheckSelect = ({language, checkTools, firstPage, checkLangs, key, selectTool, selectLang, tool}) => {
+const CheckSelect = ({firstPage, key, language, tool, selectedLangs, selectedTools, checkTools, checkLangs}) => {
     const [checked, setChecked] = useState(false)
-
     return (
         <SelectDiv
          as={motion.div}
@@ -21,8 +20,8 @@ const CheckSelect = ({language, checkTools, firstPage, checkLangs, key, selectTo
             type="checkbox" 
             checked={checked}
             onClick={() => setChecked(!checked)}
-            onChange={() => checked === false ? checkLangs([...selectLang, language.value]) 
-                : checkLangs(checkedLangs.filter((lang) => lang.value))}
+            onChange={() => checked === false ? checkLangs(selectedLangs.concat(language.value)) 
+                : checkLangs(selectedLangs.filter((lang) => lang !== language.value))}
             
             /> 
         </label>
@@ -32,8 +31,8 @@ const CheckSelect = ({language, checkTools, firstPage, checkLangs, key, selectTo
             type="checkbox"
             checked={checked}
             onClick={() => setChecked(!checked)}
-            onChange={() => checked === false ? checkTools([...selectTool, tool.value])
-                : checkTools(checkedTools.filter((tool) => tool.value))}
+            onChange={() => checked === false ? checkTools([...selectedTools, tool.value])
+                : checkTools(selectedTools.filter((tool) => tool.value))}
              />
         </label>
         )}

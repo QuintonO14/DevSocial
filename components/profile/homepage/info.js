@@ -6,12 +6,14 @@ const Languages = dynamic(() => import('./languages'))
 const Profile = dynamic(() => import('../../../styles/home').then((mod) => mod.Profile))
 const ProfileInfo = dynamic(() => import('../../../styles/home').then((mod) => mod.ProfileInfo))
 const Tab = dynamic(() => import('../../../styles/home').then((mod) => mod.Tab))
+const Follow = dynamic(() => import('../../../styles/home').then((mod) => mod.Follow))
 const Unfollow = dynamic(() => import('../../../styles/home').then((mod) => mod.Unfollow))
 
 const Info = ({profile, session}) => {
     const friend = profile.friendsRelation.map((friend) => {return friend.id})
-    const friends = friend.includes(session.userId)
     const [tab, setTab] = useState(false)
+    const friends = friend.includes(session.userId)
+    const isUser = profile.id === session.userId
     const router = useRouter()
 
     //Active Class for Profile Tabs
@@ -19,7 +21,19 @@ const Info = ({profile, session}) => {
         background: 'rgba(255,180,50,1)',
     }
 
-    //Unfollow user to stop seeing their posts
+    const addFollow = async (id) => {
+      const body = {
+        id: session.userId,
+        friend: id
+      }
+      await fetch(`/api/profile/profile`, {
+        method: 'PUT',
+        body: JSON.stringify(body)
+      })
+      router.reload(window.location.pathname)
+    }
+  
+    //Unfollow resulted user and return to profile
     const removeFollow = async (id) => {
       const body = {
         id: session.userId,
@@ -29,7 +43,7 @@ const Info = ({profile, session}) => {
         method: 'DELETE',
         body: JSON.stringify(body)
       })
-      router.replace(router.asPath)
+      router.push('/home')
     }
 
     
@@ -39,11 +53,12 @@ const Info = ({profile, session}) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}>
-          <h3>{profile.name}</h3>
-          <img width={'90%'} height={300} src={profile.image ? profile.image : '/avatar.png'} alt='No Image' />
-          {friends ? (
-          <Unfollow onClick={() => removeFollow(profile.id)}>Unfollow</Unfollow>
-          ) : null }
+          <h1>{profile.name}</h1>
+          <img src={profile.image ? profile.image : '/avatar.png'} alt='No Image' />
+          {!isUser ? (
+          friends ? ( <Unfollow onClick={() => removeFollow(profile.id)}>Unfollow</Unfollow> ) 
+          : <Follow onClick={() => addFollow(profile.id)}>Follow</Follow> ) 
+          : null}
           <div>
             <Tab onClick={() => setTab(false)} style={tab === false ? active : null}>About</Tab>
             <Tab onClick={() => setTab(true)} style={tab === true ? active : null}>Languages and Tools</Tab>

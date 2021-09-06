@@ -25,7 +25,7 @@ const Basic = ({about, data, email, file, handleFile, name}) => {
             </FormLabel>
             <FormLabel htmlFor="file">Profile Picture:</FormLabel>
             <FormImage>
-                <img height={400} width={400} src={file ? URL.createObjectURL(file) : data.image} 
+                <img src={file ? URL.createObjectURL(file) : data.image} 
                 placeholder="Choose Some Files" alt={file ? file : null} />
                 <FormFile type="file" accept=".jpeg, .png, .jpg" onChange={handleFile} />
             </FormImage>    

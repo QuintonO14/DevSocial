@@ -21,7 +21,10 @@ export default function App({ Component, pageProps }) {
   <AnimateSharedLayout>
     <Provider session={pageProps.session}>
       <GlobalStyles />
-      {loading ? (<Loader />) : ( 
+      {loading ? (
+      <div style={{display: 'flex', height: '100%'}}>
+        <Loader />
+      </div>) : ( 
       <Component {...pageProps} />
       )}
     </Provider>

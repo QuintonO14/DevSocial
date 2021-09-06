@@ -16,38 +16,18 @@ const PostAuthor = dynamic(() => import('../../styles/home').then((mod) => mod.P
 const ProfilePage = dynamic(() => import('../../styles/home').then((mod) => mod.ProfilePage))
 
 
-const id = ({post, users, session}) => {
+const id = ({post, session}) => {
     const [tool, isVisible] = useState(false)
     const [edit, editing] = useState(false)
     const [comm, setComm] = useState('')
     const editRef = useRef(null)
     const [message, setMsg] = useState('')
     const [comments, setComments] = useState(post.comments)
-    const searchedUsers = users.filter((user => user.id !== session.userId))
-    const [resultsString , results] = useState('')
-    const [filteredUsers, setUsers] = useState(null)
     const router = useRouter()
     //Set tooltip visibility
     setTimeout(() => {
         isVisible(true)
       }, 1000)
-
-    //Search for users
-    const findUsers = async (e) => {
-      const searchUsers = e.target.value.toLowerCase()
-      results(searchUsers)
-      const usersFiltered = searchedUsers.filter((user) => {
-        return user.name.toLowerCase().match(searchUsers.replace(/\\/g, "\\\\"));
-      })
-      const foundUsers = usersFiltered.map((user) => {
-          return user.id
-      })
-      if(!searchUsers) {
-        setUsers(null)
-      } else {
-      setUsers(foundUsers)
-      }
-    }
 
     //Add a comment to post
     const addComment = async (e) => {
@@ -136,7 +116,7 @@ const id = ({post, users, session}) => {
                 <meta name="post" content={`${post} belonging to ${post.author} on DevSocial`} />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
             </Head>
-            <Navigation filteredUsers={filteredUsers} findUsers={findUsers} resultsString={resultsString} session={session} />
+            <Navigation />
             <SinglePost>
                 {message ? <Error>{message}</Error> : null}
                 <PostAuthor>
@@ -207,12 +187,11 @@ export async function getServerSideProps(context) {
         }
         }
     })
-    const users = await prisma.user.findMany()
+    
     return {
       props: {
         post : JSON.parse(JSON.stringify(post)),
         session: await getSession(context),
-        users: users
       } 
     }
    

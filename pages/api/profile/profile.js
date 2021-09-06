@@ -1,6 +1,10 @@
 import prisma from '../../../lib/prisma'
 
 export default async function update(req, res) {
+   if(req.method === 'GET') {
+      const users = await prisma.user.findMany()
+        res.json(users)
+    }
     //Update user by fields
    if(req.method === 'PATCH') {
       const body = JSON.parse(req.body);   
