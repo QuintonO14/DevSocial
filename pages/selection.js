@@ -101,13 +101,13 @@ export async function getServerSideProps(context) {
         }
     })
 
-    if(moment(user.createdAt).format("hh:mm:ss") != moment(user.updatedAt).format("hh:mm:ss")) {
-        return {
-            redirect: {
-                destination: '/home'
-            }
-        }
-    }
+    // if(moment(user.createdAt).format("hh:mm:ss") != moment(user.updatedAt).format("hh:mm:ss")) {
+    //     return {
+    //         redirect: {
+    //             destination: '/home'
+    //         }
+    //     }
+    // }
 
     
 
