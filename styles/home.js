@@ -253,6 +253,10 @@ export const FormImage = styled.div`
     text-align: center;
     position: relative;
     margin: auto;
+
+    img {
+        width: 100%;
+    }
 `
 
 export const FormLabel = styled.label`
