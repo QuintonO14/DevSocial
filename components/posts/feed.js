@@ -85,7 +85,7 @@ const Feed = ({ posts, profile, session }) => {
                   return (
                       <Post key={post.id}>
                       <div>
-                      {/* <img src={post.author.image ? post.author.image : '/avatar.png'} />   */}
+                      <img src={post.author.image ? post.author.image : '/avatar.png'} />  
                       <Link href={`/profile/id=${post.authorId}`}
                       as={`/profile/${post.authorId}`}>
                           <h4>{post.author.name}</h4>
