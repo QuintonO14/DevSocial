@@ -255,8 +255,14 @@ export const FormImage = styled.div`
     margin: auto;
 
     img {
-        width: 50%
+        width: 100%;
+        border: 1px dashed;
+
+        @media(min-width: 600px){
+            width: 50%;
+        }
     }
+    
 `
 
 export const FormLabel = styled.label`
@@ -417,13 +423,14 @@ export const Modal = styled.div`
     border-radius: 10px;
     overflow-y: auto;
     color: black;
+    top: 30%;
     z-index: 3;
 
     @media (min-width:768px) {
         width: 70%;
         left: 15%;
         right: 15%;
-        top: 0
+        top: 15%
     }
 
     @media (min-width: 1024px) {
@@ -758,13 +765,13 @@ export const Result = styled.div`
         cursor: pointer;
     }
 
-    footer > svg {
+    svg {
         position: absolute;
-        bottom: 0;
+        top:0;
         right: 0;
-        margin: 5%;
-        height: 20px;
-        width: 20px;
+        height: 1rem;
+        color: black;
+        width: 1rem;
     }
 
     img {

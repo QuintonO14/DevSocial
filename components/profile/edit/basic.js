@@ -1,10 +1,18 @@
 import dynamic from 'next/dynamic'
+import { useS3Upload } from 'next-s3-upload'
+import ReactTooltip from 'react-tooltip'
+import { useState } from 'react'
 const FormFile = dynamic(() => import('../../../styles/home').then((mod) => mod.FormFile))
 const FormImage = dynamic(() => import('../../../styles/home').then((mod) => mod.FormImage))
 const FormLabel = dynamic(() => import('../../../styles/home').then((mod) => mod.FormLabel))
 
 const Basic = ({about, data, email, file, handleFile, name}) => {
-    
+    let { FileInput, openFileDialog } = useS3Upload();
+    const [tool, setTool] = useState(false)
+    setTimeout(() => {
+        setTool(true)
+    }, 100)
+
     return (
         <div>
             <FormLabel htmlFor="name">Name:
@@ -23,11 +31,12 @@ const Basic = ({about, data, email, file, handleFile, name}) => {
             >
             </textarea>
             </FormLabel>
+            {tool === true && <ReactTooltip />}
             <FormLabel htmlFor="file">Profile Picture:</FormLabel>
             <FormImage>
-                <img src={file ? file : (data.image ? data.image : '/avatar.png')} 
+                <img data-tip="Click to upload" onClick={openFileDialog} src={file ? file : (data.image ? data.image : '/avatar.png')} 
                 placeholder="Choose Some Files" alt={file ? file : null} />
-                <FormFile type="file" accept=".jpeg, .png, .jpg" onChange={handleFile} />
+                <FileInput type="file" accept=".jpeg, .png, .jpg" onChange={handleFile} />
             </FormImage>    
         </div> 
         

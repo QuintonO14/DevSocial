@@ -98,9 +98,9 @@ const Feed = ({ posts, profile, session }) => {
                       <footer>
                         <small style={{"marginRight":"auto"}}>{post.comments.length} Comments</small>
                         <small>Posted <Moment fromNow>{post.createdAt}</Moment></small>
-                       {post.authorId === session.userId ? 
+                       {post.authorId === session.userId && 
                          <FontAwesomeIcon onClick={() => deletePost(post.id)} icon={faTrash}/>
-                        : null}
+                       }
                       </footer>
                       </Post>
                   )

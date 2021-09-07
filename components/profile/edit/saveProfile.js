@@ -76,13 +76,15 @@ const saveProfile = ({ about, data, email, deleteAccount, handleFile,
              />
              <SaveProfile onClick={updateProfile}>Save Profile</SaveProfile>
              <DeleteAccount onClick={() => deleteAccount(data.id)}>Delete Account</DeleteAccount>
-             <ListModal
-             friends={friends} 
-             followers={followers} 
-             profile={data}
-             deleting={deleting}
+             <ListModal 
+             isFriend={friends} 
+             friends={data.friends} 
+             followers={data.friendsRelation} 
+             follows={followers}
              following={following}
-             close={close}  /> 
+             deleting={deleting} 
+             profile={data} 
+             close={close} /> 
         </ProfileEdit>
         </motion.div>
     )

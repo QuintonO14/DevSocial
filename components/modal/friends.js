@@ -3,8 +3,9 @@ import Link from 'next/link'
 import { useState } from "react"
 const ListItem = dynamic(() => import('../../styles/home').then((mod) => mod.ListItem))
 
-const Friends = ({deleting, friend, friendId, isFriend, key}) => {
+const Friends = ({deleting, friendId, friend, isFriend }) => {
     const [follow, setFollow] = useState(isFriend === true ? true : false)
+
     //Follow another user
     const addFollow = async (id) => {
         setFollow(!follow)
@@ -36,11 +37,13 @@ const Friends = ({deleting, friend, friendId, isFriend, key}) => {
             <Link href={`/profile/${friend.id}`}>
                 <p>{friend.name}</p>
             </Link>
-        {deleting === true && follow === true ?
-         <button onClick={() => removeFollow(friend.id)}>Unfollow</button>
-          : deleting === true && follow === false ? 
-         <button onClick={() => addFollow(friend.id)}>Follow</button>
-        : null}
+        {deleting === true && (
+          follow == true ? (
+            <button onClick={() => removeFollow(friend.id)}>Unfollow</button>
+          ) : (
+            <button onClick={() => addFollow(friend.id)}>Follow</button>
+          )
+        )}
         </ListItem>
     )
 }

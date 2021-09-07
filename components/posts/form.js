@@ -19,7 +19,7 @@ const Form = ({create, createPost, content, message, messageClass, showCreate}) 
           animate={{y: 200}}
           exit={{y: -200}}
           >
-             {message ? <p style={messageClass}>{message}</p> : null}
+             {message && <p style={messageClass}>{message}</p>}
             <textarea
             ref={content} 
             rows={5}

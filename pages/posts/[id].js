@@ -118,20 +118,20 @@ const id = ({post, session}) => {
             </Head>
             <Navigation />
             <SinglePost>
-                {message ? <Error>{message}</Error> : null}
+                {message && <Error>{message}</Error>}
                 <PostAuthor>
                 <Link href={`/profile/${post.authorId}`}>
                       <img src={post.author.image ? post.author.image : '/avatar.png'} />
                 </Link>
                 <h4>{post.author.name}</h4>
                 </PostAuthor>
-                {session.userId === post.authorId ? (
+                {session.userId === post.authorId && (
                     <FontAwesomeIcon 
                     onClick={() => editPost(!edit)} 
                     icon={faEdit} 
                     data-tip="Edit Post" />
-                ) : null}
-            {tool === true ? <ReactTooltip /> : null }
+                )}
+            {tool === true && <ReactTooltip />}
                 <Post
                  post={post}
                  addComment={addComment}

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useState } from "react"
 const ListItem = dynamic(() => import('../../styles/home').then((mod) => mod.ListItem))
 
-const Followers = ({following, follower, friendId}) => {
+const Followers = ({follows, following, follower, friendId}) => {
     const isFriend = follower.friendsRelation.map((friend) => { return friend.id })
     const [follow, setFollow] = useState(isFriend.includes(friendId) ? true : false)
     //Follow another user
@@ -25,16 +25,18 @@ const Followers = ({following, follower, friendId}) => {
 
     
     return (
-        <ListItem key={follower.id} style={following === true ? {justifyContent:'space-between'} : null}>
+        <ListItem key={follower.id} style={follows === true ? {justifyContent:'space-between'} : null}>
             <img height={50} width={50} src={follower.image} alt="image" />
             <Link href={`/profile/${follower.id}`}>
                 <p>{follower.name}</p>
             </Link>
-        {following === true && follow === false ? 
-            <button onClick={() => addFollow(follower.id)}>Follow</button> 
-            : following === true && follow === true ?
-            <button style={disabled} disabled>Following</button>
-        : null}
+        {following === true && (
+          follow == false ? (
+            <button onClick={() => addFollow(follower.id)}>Follow</button>
+          ) : (
+            <button styled={disabled} disabled>Following</button>
+          )
+        )}
         </ListItem>
     )
 }

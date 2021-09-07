@@ -8,15 +8,16 @@ const Modal = dynamic(() => import('../../styles/home').then((mod) => mod.Modal)
 
 const Overlay = dynamic(() => import('../../styles/home').then((mod) => mod.Overlay))
 
-const ListModal = ({close, deleting, followers, following, friends, profile}) => {
+const ListModal = ({close, deleting, following, follows, friends, isFriend, profile}) => {
+
     return (
       <>
         <AnimatePresence>
-        {friends === true && (
+        {isFriend === true && (
           <>
           <Modal
           as={motion.div}
-          initial={{opacity: 0, top: '30%'}}
+          initial={{opacity: 0}}
           animate={{ opacity: 1}} 
           transition={{ease: 'easeInOut', type: 'spring', bounce:0.25, duration: .5}}>
             <h1>Friends</h1>
@@ -26,8 +27,8 @@ const ListModal = ({close, deleting, followers, following, friends, profile}) =>
                   <Friends 
                   key={friend.id}
                   deleting={deleting}
+                  isFriend={isFriend}
                   friend={friend}
-                  isFriend={friends} 
                   friendId={profile.id}
                   />
               )
@@ -40,19 +41,23 @@ const ListModal = ({close, deleting, followers, following, friends, profile}) =>
         )}
         </AnimatePresence>
        <AnimatePresence>
-          {followers === true && (
+          {follows === true && (
           <>
-          <Modal as={motion.div}
-            animate={following === true ? {y: 500} : {y: 100}} 
+          <Modal 
+            as={motion.div}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}} 
             transition={{ease: 'easeInOut', type: 'spring', bounce:0.25, duration: .5}}>
             <h1>Followers</h1>
             <List>
             {profile.friendsRelation.map((follower) => {
+
               return (
                 <Followers
                 key={follower.id}
-                following={following}
+                follows={follows}
                 follower={follower}
+                following={following}
                 friendId={profile.id}
                 /> 
               )

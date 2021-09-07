@@ -3,9 +3,9 @@ import { getSession } from 'next-auth/client'
 import { useRef, useState } from 'react';
 import {languages, tools}  from '../../data/data';
 import { useRouter } from 'next/router';
-import S3 from 'aws-s3'
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import { useS3Upload  } from 'next-s3-upload';
 const Navigation = dynamic(() => import('../../components/navbar'))
 const SaveProfile = dynamic(() => import('../../components/profile/edit/saveProfile'))
 
@@ -15,27 +15,18 @@ const Profile = ({ data }) => {
     const name = useRef(null)
     const email = useRef(null)
     const about = useRef(null)
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState();
     const [message, setMsg] = useState('')
     const router = useRouter();
     const filteredLang = languages.filter(language => data.languages.includes(language.value))
     const filteredTool = tools.filter(tool => data.tools.includes(tool.value))
+    let { uploadToS3 } = useS3Upload();
 
-    //Handles file upload for form submission
-    const handleFile = async (e) => {
-      let files = e.target.files[0]
-      await S3Client.uploadFile(files).then(data => setFile(data.location))
+     //Handles file upload for form submission
+     let handleFile = async (file) => {
+      let { url } = await uploadToS3(file)
+      setFile(url);
     }
-
-    //Initialize AWS S3 client for images
-    const config = {
-      bucketName: 'devsocialimages',
-      region: 'us-east-2',
-      accessKeyId: 'AKIASUYXKRGOECODQD4M',
-      secretAccessKey: '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',
-    }
-    const S3Client = new S3(config);
-
 
     //Update user profile 
     const updateProfile = async () => {

@@ -19,9 +19,7 @@ const Home = ({posts, profile, session }) => {
     const friends = profile.friends.map((friend) => {
       return friend.id
     })
-    const followers = profile.friendsRelation.map((follower) => {
-      return follower.id
-    })
+
     const content = useRef(null)
 
     //Trigger Create Post Form
@@ -58,7 +56,7 @@ const Home = ({posts, profile, session }) => {
           {section === true  ? (
           <>
           <Info profile={profile} session={session}/>
-          <SidePanel profile={profile} session={session} follower={followers} />
+          <SidePanel profile={profile} session={session} />
           </>
           ) : (
            <Feed
@@ -79,7 +77,7 @@ const Home = ({posts, profile, session }) => {
          <BigScreen>
           <section>
           <Info profile={profile} session={session}/>
-          <SidePanel profile={profile} session={session} follower={followers} />
+          <SidePanel profile={profile} session={session} />
           </section>
           <Feed
            content={content}

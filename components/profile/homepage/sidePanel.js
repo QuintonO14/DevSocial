@@ -6,12 +6,15 @@ import { motion } from "framer-motion"
 const ListModal = dynamic(() => import('../../modal/modal'))
 const Panel = dynamic(() => import('../../../styles/home').then((mod) => mod.Panel))
 
-const sidePanel = ({follower, profile, session}) => {
+const sidePanel = ({profile, session}) => {
     const [alternatePanel, setPanel] = useState(true)
     const [tooltip, setTool] = useState(false);
     const [friends, showFriends] = useState(false);
-    const [followers, showFollowers] = useState(false);
-    const followerId = follower.map((id) => {return id.id}).includes(session.userId)
+    const [follows, showFollowers] = useState(false);
+    const followers = profile.friendsRelation.map((f) => { return f})
+    const userFriends = profile.friends.map((f) => { return f})
+    const followerId = followers.map((id) => {return id.id}).includes(session.userId)
+
     // Change between Friends and Followers and set tooltip visibility
     useEffect(() => {
       const timer = setTimeout(() => {
@@ -40,14 +43,15 @@ const sidePanel = ({follower, profile, session}) => {
 
     return (
       <>
+        {tooltip === true && <ReactTooltip />}
         <Panel
           as={motion.div}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-        {tooltip === true ? <ReactTooltip /> : null}
         {alternatePanel === true ? (
+
         <div>
         {followerId === true || session.userId === profile.id ?  (
         <>
@@ -97,7 +101,7 @@ const sidePanel = ({follower, profile, session}) => {
           </div>
         </div>
         )}
-        <ListModal friends={friends} followers={followers} follower={follower} profile={profile} close={close} /> 
+        <ListModal isFriend={friends} friends={userFriends} followers={followers} follows={follows} profile={profile} close={close} /> 
        </Panel>
       </>
     )

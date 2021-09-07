@@ -53,8 +53,8 @@ const ResultPic = ({user, session, isFriend, isFollowing}) => {
           <Unfollow id="unfollow" onClick={() => removeFollow(user.id)}>Unfollow</Unfollow> :
           <Follow id="follow" onClick={() => addFollow(user.id)}>Follow</Follow>
           }
-          {following ? <FontAwesomeIcon data-tip="Following You" icon={faEye} /> : null}
-          {tool === true ? <ReactTooltip /> : null}
+          {following && <FontAwesomeIcon data-tip="Following You" icon={faEye} />}
+          {tool === true && <ReactTooltip />}
           </footer>
         </Result>
 )

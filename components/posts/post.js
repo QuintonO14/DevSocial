@@ -16,9 +16,9 @@ const Post = ({addComment, deletePost, edit, editRef, handleChange, message, pos
                 suppressContentEditableWarning={true}>
                     {post.content}
                 </p>
-                {session.userId === post.authorId ?
+                {session.userId === post.authorId &&
                     <FontAwesomeIcon icon={faTrash} onClick={deletePost} />
-                : null}
+                }
                 <small><Moment fromNow>{post.createdAt}</Moment></small>
                 <hr />
                 <CommentBox addComment={addComment} message={message} handleChange={handleChange} />

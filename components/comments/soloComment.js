@@ -52,8 +52,8 @@ const SoloComment = ({comment, post, deleteComment, comRef, session}) => {
 
     return (
     <Comment key={comment.id}>
-                    {message ? <Error>{message}</Error> : null}
-                    {tool === true ? <ReactTooltip /> : null}
+                    {message && <Error>{message}</Error>}
+                    {tool === true && <ReactTooltip />}
                    <div>
                       <Link href={`/profile/${comment.authorId}`}>
                         <img src={comment.author.image ? comment.author.image : '/avatar.png'} />
@@ -77,11 +77,11 @@ const SoloComment = ({comment, post, deleteComment, comRef, session}) => {
                     <>
                         <p id={comment.id}>
                             {comment.comment.slice(0,200)}
-                            {comment.comment.length > 200 ? ( 
+                            {comment.comment.length > 200 && ( 
                         <ReadMoreLess onClick={() => isReadMore(true)}>
                             More...
                         </ReadMoreLess>
-                        ) : null}
+                        )}
                         </p>
                         
                     </>
@@ -89,16 +89,16 @@ const SoloComment = ({comment, post, deleteComment, comRef, session}) => {
                     <>
                         <p id={comment.id}>
                             {comment.comment}
-                            {comment.comment.length > 200 ? (
+                            {comment.comment.length > 200 && (
                         <ReadMoreLess onClick={() => isReadMore(false)}>
                             Less...
                         </ReadMoreLess>
-                        ) : null} 
+                        )} 
                         </p>
                     </>
                     ))}
                     <small><Moment fromNow>{comment.createdAt}</Moment></small>
-                    {session.userId === comment.authorId || session.userId === post.authorId? 
+                    {session.userId === comment.authorId || session.userId === post.authorId ?
                     <>
                     <FontAwesomeIcon 
                     icon={faTrash}
