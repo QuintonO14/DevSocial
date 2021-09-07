@@ -3,6 +3,7 @@ import { getSession } from 'next-auth/client'
 import { useRef, useState } from 'react';
 import {languages, tools}  from '../../data/data';
 import { useRouter } from 'next/router';
+import S3 from 'aws-s3'
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 const Navigation = dynamic(() => import('../../components/navbar'))
@@ -20,33 +21,24 @@ const Profile = ({ data }) => {
     const filteredLang = languages.filter(language => data.languages.includes(language.value))
     const filteredTool = tools.filter(tool => data.tools.includes(tool.value))
 
-    //Convert image to binary 
-    const convertBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file)
-        fileReader.onload = () => {
-          resolve(fileReader.result);
-        }
-        fileReader.onerror = (error) => {
-          reject(error);
-        }
-      })
-    }
     //Handles file upload for form submission
     const handleFile = async (e) => {
       let files = e.target.files[0]
-      setFile(files);
+      await S3Client.uploadFile(files).then(data => setFile(data.location))
     }
+
+    //Initialize AWS S3 client for images
+    const config = {
+      bucketName: 'devsocialimages',
+      region: 'us-east-2',
+      accessKeyId: 'AKIASUYXKRGOECODQD4M',
+      secretAccessKey: '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',
+    }
+    const S3Client = new S3(config);
+
 
     //Update user profile 
     const updateProfile = async () => {
-      let base64 
-      if(file){
-        base64 = await convertBase64(file)
-      } else {
-        base64 = data.image
-      }
       const lang = userLanguages.current.state.value
       const tool = userTools.current.state.value
       const mappedLang = lang.map((language => {
@@ -60,7 +52,7 @@ const Profile = ({ data }) => {
         about: about.current.value,
         name: name.current.value,
         email: email.current.value,
-        image:  base64, 
+        image:  file ? file : null, 
         languages: mappedLang,
         tools: mappedTool
       }

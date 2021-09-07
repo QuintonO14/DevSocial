@@ -1,13 +1,15 @@
 import prisma from '../../../lib/prisma'
 
+
 export default async function update(req, res) {
+
    if(req.method === 'GET') {
       const users = await prisma.user.findMany()
         res.json(users)
     }
     //Update user by fields
    if(req.method === 'PATCH') {
-      const body = JSON.parse(req.body);   
+      const body = JSON.parse(req.body);  
         if(body.email) {
             const email = await prisma.user.findUnique({
                 where: {
@@ -34,7 +36,6 @@ export default async function update(req, res) {
         
         })
    }
-
    //Update user's friends 
    if(req.method === 'PUT') {
        const body = JSON.parse(req.body);
