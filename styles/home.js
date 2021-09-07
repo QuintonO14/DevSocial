@@ -255,7 +255,7 @@ export const FormImage = styled.div`
     margin: auto;
 
     img {
-        width: 100%;
+        width: 50%
     }
 `
 
