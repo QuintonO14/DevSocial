@@ -3,6 +3,7 @@
 DevSocial aims to connect developers to other developers. Make friends, collaborate, and more!
 
 With DevSocial, users can:
+
   -Make posts to be displayed on their feed
 
   -Add comments to any post that has been created
